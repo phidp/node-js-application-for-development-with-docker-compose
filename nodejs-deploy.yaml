@@ -14,33 +14,34 @@ spec:
       labels:
         app: nodejs
     spec:
-      volumes:
-      - name: work-dir
-        emptyDir:
-          sizeLimit: 1Gi
-      - name: app-module
-        emptyDir:
-          sizeLimit: 1Gi
       containers:
       - name: nodejs-env
         image: phidp/nodejs-demo-app:1.1
-        volumeMounts:
-        # - mountPath: /home/node/app
-        #   name: work-dir
-        - mountPath: /home/node/app/node_modules
-          name: app-module
-        env:
-        - name: MONGO_USERNAME
-          value: "admin"
-        - name: MONGO_PASSWORD
-          value: "123456a@"
-        - name: MONGO_HOSTNAME
-          value: "db"
-        - name: MONGO_PORT
-          value: "27017"
-        - name: MONGO_DB
-          value: sharkinfo
+        envFrom:
+          - configMapRef:
+              name: mongo-config
+          - secretRef:
+              name: mongo-secret
+        # env:
+        # - name: MONGO_USERNAME
+        #   value: "admin"
+        # - name: MONGO_PASSWORD
+        #   value: "123456a@"
+        # - name: MONGO_HOSTNAME
+        #   value: "db"
+        # - name: MONGO_PORT
+        #   value: "27017"
+        # - name: MONGO_DB
+        #   value: sharkinfo
         ports:
         - name: container-port
           containerPort: 8080
+        # resources:
+        #   requests:
+        #     memory: 128Mi
+        #     cpu: 256Mi
+        #   limits:
+        #     memory: 1Gi
+        #     cpu: 1Gi
+
 
