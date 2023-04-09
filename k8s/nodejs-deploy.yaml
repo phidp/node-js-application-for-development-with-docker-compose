@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs
+  labels:
+    app: nodejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs
+  template:
+    metadata:
+      labels:
+        app: nodejs
+    spec:
+      # volumes:
+      #   - name: app-volume
+      #     hostPath:
+      #       path: /root/node-js-application-for-development-with-docker-compose/
+      #   - name: node-modules
+      #     emptyDir: {}
+      containers:
+      - name: nodejs-env
+        image: phidp/nodejs-demo-app:1.1
+        # volumeMounts:
+        #   - name: app-volume
+        #     mountPath: /home/node/app
+        #   - name: node-modules
+        #     mountPath: /home/node/app/node_modules
+        envFrom:
+          - configMapRef:
+              name: mongo-config
+          - secretRef:
+              name: mongo-secret
+        ports:
+        - name: container-port
+          containerPort: 8080
+
+
