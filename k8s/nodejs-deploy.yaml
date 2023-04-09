@@ -36,5 +36,13 @@ spec:
         ports:
         - name: container-port
           containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /sharks
+            port: container-port
+        readinessProbe:
+          httpGet:
+            path: /sharks
+            port: container-port
 
 
